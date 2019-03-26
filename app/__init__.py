@@ -9,3 +9,5 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app import routes, models
+
+app.run(host='0.0.0.0')
