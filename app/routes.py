@@ -7,6 +7,7 @@ from app.forms import LoginForm
 @app.route('/')
 @app.route('/index')
 def index():
+    '''View function for homepage'''
     user = {'username': 'Jeremy'}
     posts = [
         {
@@ -43,5 +44,6 @@ def login():
 
 @app.route('/logout')
 def logout():
+    '''View function for user logout'''
     logout_user()
     return redirect(url_for('index'))
