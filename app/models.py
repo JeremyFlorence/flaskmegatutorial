@@ -1,14 +1,12 @@
-"""
+'''
 All tables for database defined here
-"""
+'''
 from datetime import datetime
 from app import db
 
 
 class User(db.Model):
-    """
-    User Table
-    """
+    '''Users table'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -19,6 +17,7 @@ class User(db.Model):
 
 
 class Post(db.Model):
+    '''User posts table'''
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
