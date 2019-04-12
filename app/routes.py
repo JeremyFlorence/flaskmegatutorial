@@ -12,7 +12,6 @@ from app.forms import LoginForm
 @login_required
 def index():
     '''View function for homepage'''
-    user = {'username': 'Jeremy'}
     posts = [
         {
             'author': {'username': 'John'},
@@ -23,7 +22,7 @@ def index():
             'body': 'A post by Susan.'
         }
     ]
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    return render_template('index.html', title='Home', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
