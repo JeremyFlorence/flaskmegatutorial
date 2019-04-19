@@ -7,11 +7,12 @@ from app import app, db
 from app.models import User
 from app.forms import LoginForm, RegistrationForm
 
+
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    '''View function for homepage'''
+    """View function for homepage"""
     posts = [
         {
             'author': {'username': 'John'},
@@ -24,9 +25,10 @@ def index():
     ]
     return render_template('index.html', title='Home', posts=posts)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    '''View function for user login'''
+    """View function for user login"""
 
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -48,9 +50,10 @@ def login():
 
     return render_template('login.html', title='Sign In', form=form)
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    '''View function for user registration'''
+    """View function for user registration"""
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     
@@ -64,8 +67,20 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+    return render_template('user.html', user=user, post=posts)
+
+
 @app.route('/logout')
 def logout():
-    '''View function for user logout'''
+    """View function for user logout"""
     logout_user()
     return redirect(url_for('index'))
