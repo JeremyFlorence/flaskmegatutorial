@@ -1,4 +1,4 @@
-'''Contains URL routing and view functions'''
+"""Contains URL routing and view functions"""
 
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
@@ -76,7 +76,7 @@ def user(username):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, post=posts)
+    return render_template('user.html', user=user, posts=posts)
 
 
 @app.route('/logout')

@@ -1,14 +1,15 @@
-'''
+"""
 All tables for database defined here
-'''
+"""
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import db, login
+from hashlib import md5
 
 
 class User(UserMixin, db.Model):
-    '''Users table'''
+    """Users table"""
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -16,12 +17,16 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+
     def set_password(self, password):
-        '''Sets the password for the user'''
+        """Sets the password for the user"""
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        '''Checks that the entered password is correct'''
+        """Checks that the entered password is correct"""
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
@@ -29,7 +34,7 @@ class User(UserMixin, db.Model):
 
 
 class Post(db.Model):
-    '''User posts table'''
+    """User posts table"""
 
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
@@ -39,7 +44,8 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post {}>'.format(self.body)
 
+
 @login.user_loader
 def load_user(user_id):
-    '''User loader function for Flask-Login'''
+    """User loader function for Flask-Login"""
     return User.query.get(int(user_id))
